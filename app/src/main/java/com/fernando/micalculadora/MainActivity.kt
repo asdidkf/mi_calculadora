@@ -2,6 +2,7 @@ package com.fernando.micalculadora
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
     var oper: Int = 0
-    var numero: Double = 0.0
+    var numero1: Double = 0.0
     lateinit var tv_num1: TextView
     lateinit var tv_num2: TextView
 
@@ -26,6 +27,30 @@ class MainActivity : AppCompatActivity() {
 
         tv_num1 = findViewById<TextView>(R.id.tv_num1)
         tv_num2 = findViewById(R.id.tv_num2)
+        val btnBorrar: Button = findViewById<Button>(R.id.btnBorrar)
+        val btnIgual: Button = findViewById<Button>(R.id.btnIgual)
+
+        btnIgual.setOnClickListener {
+            var numero2: Double = tv_num2.text.toString().toDouble()
+            var resp: Double = 0.0
+
+            when(oper){
+                1 -> resp = numero1 + numero2
+                2 -> resp = numero1 - numero2
+                3 -> resp = numero1 * numero2
+                4 -> resp = numero1 / numero2
+            }
+
+            tv_num2.setText(resp.toString())
+            tv_num1.setText("")
+        }
+
+        btnBorrar.setOnClickListener {
+            tv_num1.setText("")
+            tv_num2.setText("")
+            numero1 = 0.0
+            oper = 0
+        }
     }
 
     fun clicNumero(view: View){
@@ -47,13 +72,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun clicOperacion(view: View){
-        numero = tv_num2.text.toString().toDouble()
+        numero1 = tv_num2.text.toString().toDouble()
         var num2_text: String = tv_num2.text.toString()
+        tv_num2.setText("")
 
         when(view.id){
             R.id.btnSumar -> {
                 tv_num1.setText(num2_text + "+")
                 oper = 1
+            }
+            R.id.btnRestar -> {
+                tv_num1.setText(num2_text + "-")
+                oper = 2
+            }
+            R.id.btnMult -> {
+                tv_num1.setText(num2_text + "*")
+                oper = 3
+            }
+            R.id.btnDividir -> {
+                tv_num1.setText(num2_text + "/")
+                oper = 4
             }
         }
     }
